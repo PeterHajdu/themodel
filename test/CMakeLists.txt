@@ -6,6 +6,7 @@ set(TEST_SOURCE_FILES
     test_node.cpp
     test_lua.cpp
     test_helpers.cpp
+    test_variable.cpp
     )
 
 

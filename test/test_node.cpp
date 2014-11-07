@@ -4,6 +4,20 @@
 
 using namespace igloo;
 
+namespace
+{
+  std::string name_from( const std::vector< std::string >& names )
+  {
+    std::string concatenated_name;
+    for ( const auto& name : names )
+    {
+      concatenated_name += name + ".";
+    }
+    concatenated_name.pop_back();
+    return concatenated_name;
+  }
+}
+
 Describe(a_node)
 {
   Describe( a_root_node )
@@ -19,6 +33,26 @@ Describe(a_node)
       AssertThat( lua->assert_that( node_name ), Equals( true ) );
     }
 
+    const std::string node_name{ "a_node" };
+    std::unique_ptr< the::model::Lua > lua;
+    std::unique_ptr< the::model::Node > root_node;
+  };
+
+  Describe( a_child_node )
+  {
+    void SetUp()
+    {
+      lua.reset( new the::model::Lua() );
+      root_node.reset( new the::model::Node( root_name, *lua ) );
+    }
+
+    It( can_be_registered_under_a_node )
+    {
+      the::model::Node child_node( node_name, *root_node );
+      AssertThat( lua->assert_that( name_from( { root_name, node_name } ) ), Equals( true ) );
+    }
+
+    const std::string root_name{ "the_root" };
     const std::string node_name{ "a_node" };
     std::unique_ptr< the::model::Lua > lua;
     std::unique_ptr< the::model::Node > root_node;

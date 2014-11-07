@@ -15,6 +15,7 @@ class Node
 {
   public:
     Node( const std::string& name, Lua& lua );
+    Node( const std::string& name, Node& parent );
 
   private:
     Lua& m_lua;

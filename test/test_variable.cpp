@@ -6,6 +6,29 @@
 
 using namespace igloo;
 
+namespace
+{
+  template < typename T >
+  const std::string to_lua_string( const T& value )
+  {
+    return std::to_string( value );
+  }
+
+  template <>
+  const std::string to_lua_string< std::string >( const std::string& value )
+  {
+    static const std::string delimiter( "\"" );
+    return delimiter + value + delimiter;
+  }
+
+  template <>
+  const std::string to_lua_string< bool >( const bool& value )
+  {
+    return value ? "true" : "false";
+  }
+}
+
+
 Describe(a_variable)
 {
   void SetUp()
@@ -53,6 +76,35 @@ Describe(a_variable)
   {
     variable.reset();
     AssertThat( lua->assert_that( variable_path ), Equals( false ) );
+  }
+
+  template < typename T >
+  void assert_works_with( const T& initial_value, const T& test_value )
+  {
+    const std::string name{ "the_variable_name" };
+    const std::string path{ the::model::path_from( { node_name, name } ) };
+    the::model::Variable< T > the_variable( name, T( initial_value ), *node );
+    AssertThat( T( the_variable ), Equals( initial_value ) );
+    AssertThat( lua->assert_that( path + " == " + to_lua_string( initial_value ) ), Equals( true ) );
+
+    the_variable = test_value;
+    AssertThat( T( the_variable ), Equals( test_value ) );
+    AssertThat( lua->assert_that( path + " == " + to_lua_string( test_value ) ), Equals( true ) );
+  }
+
+  It( works_with_string )
+  {
+    assert_works_with< std::string >( "an initial value", "a test value" );
+  }
+
+  It( works_with_double )
+  {
+    assert_works_with< double >( 123.123, -834.12 );
+  }
+
+  It( works_with_bool )
+  {
+    assert_works_with< bool >( true, false );
   }
 
   const int initial_value{ 10 };

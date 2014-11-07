@@ -25,6 +25,9 @@ class Node
     sol::table m_table;
     sol::table m_parent_table;
     const std::string m_name;
+
+    template < typename T >
+    friend class Variable;
 };
 
 }

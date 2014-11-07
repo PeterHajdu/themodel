@@ -1,0 +1,17 @@
+src/*.a
+test/test_runner
+test/valgrind.log
+
+*log*
+*core*
+*swp
+*pyc
+*.cmake
+Makefile
+CMakeFiles
+CMakeCache.txt
+build
+install_manifest.txt
+package_version
+*plist
+

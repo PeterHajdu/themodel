@@ -1,6 +1,7 @@
 
 set(SOURCE_FILES
   node.cpp
+  lua.cpp
     )
 
 add_library(themodel STATIC ${SOURCE_FILES})

@@ -17,6 +17,8 @@ class Node
   public:
     Node( const std::string& name, Lua& lua );
     Node( const std::string& name, Node& parent );
+    Node( const Node& ) = delete;
+    Node& operator=( const Node& ) = delete;
 
   private:
     void register_to( sol::table& );

@@ -24,6 +24,9 @@ class Variable
       refresh_lua_value();
     }
 
+    Variable( const Variable& ) = delete;
+    Variable& operator=( const Variable& ) = delete;
+
     operator T() const
     {
       retrieve_value_from_lua();

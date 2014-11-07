@@ -3,6 +3,7 @@ add_definitions(-Wno-deprecated-declarations)
 
 set(TEST_SOURCE_FILES
     test_runner.cpp
+    test_node.cpp
     )
 
 

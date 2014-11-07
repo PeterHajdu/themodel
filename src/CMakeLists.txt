@@ -1,5 +1,6 @@
 
 set(SOURCE_FILES
+  node.cpp
     )
 
 add_library(themodel STATIC ${SOURCE_FILES})

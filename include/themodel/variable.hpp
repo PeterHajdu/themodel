@@ -3,6 +3,7 @@
 #include <string>
 
 #include <themodel/node.hpp>
+#include <themodel/helpers.hpp>
 
 namespace the
 {
@@ -18,6 +19,7 @@ class Variable
       : m_value( initial_value )
       , m_parent_table( parent.m_table )
       , m_name( name )
+      , m_deregister( m_name, m_parent_table )
     {
       refresh_lua_value();
     }
@@ -35,11 +37,6 @@ class Variable
       return m_value;
     }
 
-    ~Variable()
-    {
-      m_parent_table.set( m_name, sol::nil );
-    }
-
   private:
     void refresh_lua_value()
     {
@@ -54,6 +51,8 @@ class Variable
     mutable T m_value;
     sol::table m_parent_table;
     const std::string m_name;
+
+    AutoDeregister m_deregister;
 };
 
 }

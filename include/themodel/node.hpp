@@ -2,6 +2,7 @@
 
 #include <string>
 #include <sol.hpp>
+#include <themodel/helpers.hpp>
 
 namespace the
 {
@@ -16,7 +17,6 @@ class Node
   public:
     Node( const std::string& name, Lua& lua );
     Node( const std::string& name, Node& parent );
-    ~Node();
 
   private:
     void register_to( sol::table& );
@@ -28,6 +28,8 @@ class Node
 
     template < typename T >
     friend class Variable;
+
+    AutoDeregister m_deregister;
 };
 
 }

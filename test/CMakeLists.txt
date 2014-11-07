@@ -7,6 +7,7 @@ set(TEST_SOURCE_FILES
     test_lua.cpp
     test_helpers.cpp
     test_variable.cpp
+    test_function.cpp
     )
 
 

@@ -29,6 +29,8 @@ class Node
     template < typename T >
     friend class Variable;
 
+    friend class Function;
+
     AutoDeregister m_deregister;
 };
 

@@ -72,7 +72,7 @@ Describe(a_function)
   It( returns_a_value )
   {
     AssertThat( lua->run( std::string( "dogfood = " ) + function_path + "()" ), Equals( true ) );
-    AssertThat( lua->assert_that( std::string( "dogfood == " ) + std::to_string( return_value ) ), Equals( true ) );
+    AssertThat( lua->assert_equals( "dogfood", return_value ), Equals( true ) );
   }
 
   const std::string node_name{ "a_node" };

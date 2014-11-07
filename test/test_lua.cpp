@@ -53,6 +53,12 @@ Describe(a_lua)
       AssertThat( lua->assert_that( "false" ), Equals( false ) );
     }
 
+    It( can_check_equation )
+    {
+      AssertThat( lua->assert_equals( "true", true ), Equals( true ) );
+      AssertThat( lua->assert_equals( "false", true ), Equals( false ) );
+    }
+
     std::unique_ptr< the::model::Lua > lua;
   };
 

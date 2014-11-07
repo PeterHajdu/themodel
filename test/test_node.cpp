@@ -49,11 +49,22 @@ Describe(a_node)
     It( can_be_registered_under_a_node )
     {
       the::model::Node child_node( node_name, *root_node );
-      AssertThat( lua->assert_that( name_from( { root_name, node_name } ) ), Equals( true ) );
+      AssertThat( lua->assert_that( child_path ), Equals( true ) );
+    }
+
+    It( should_deregister_itself_when_deleted )
+    {
+      {
+        the::model::Node child_node( node_name, *root_node );
+        AssertThat( lua->assert_that( child_path ), Equals( true ) );
+      }
+
+      AssertThat( lua->assert_that( child_path ), Equals( false ) );
     }
 
     const std::string root_name{ "the_root" };
     const std::string node_name{ "a_node" };
+    const std::string child_path{ name_from( { root_name, node_name } ) };
     std::unique_ptr< the::model::Lua > lua;
     std::unique_ptr< the::model::Node > root_node;
   };

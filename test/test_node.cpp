@@ -1,22 +1,9 @@
 #include <themodel/node.hpp>
 #include <themodel/lua.hpp>
+#include <themodel/helpers.hpp>
 #include <igloo/igloo_alt.h>
 
 using namespace igloo;
-
-namespace
-{
-  std::string name_from( const std::vector< std::string >& names )
-  {
-    std::string concatenated_name;
-    for ( const auto& name : names )
-    {
-      concatenated_name += name + ".";
-    }
-    concatenated_name.pop_back();
-    return concatenated_name;
-  }
-}
 
 Describe(a_node)
 {
@@ -64,7 +51,7 @@ Describe(a_node)
 
     const std::string root_name{ "the_root" };
     const std::string node_name{ "a_node" };
-    const std::string child_path{ name_from( { root_name, node_name } ) };
+    const std::string child_path{ the::model::path_from( { root_name, node_name } ) };
     std::unique_ptr< the::model::Lua > lua;
     std::unique_ptr< the::model::Node > root_node;
   };

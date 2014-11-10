@@ -27,3 +27,13 @@ Describe(to_lua_string_converter)
 
 };
 
+Describe(table_element_indexer)
+{
+  It( constructs_the_string_from_the_table_name_and_the_key )
+  {
+    AssertThat(
+        the::model::index_lua_table( "table", "1234" ),
+        Equals( "table[\"1234\"]" ) );
+  }
+};
+

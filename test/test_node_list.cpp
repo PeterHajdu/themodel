@@ -6,17 +6,6 @@
 
 using namespace igloo;
 
-namespace
-{
-
-const std::string
-table_element( const std::string& table_name, const std::string& key )
-{
-  return table_name + "[\"" + key + "\"]";
-}
-
-}
-
 Describe( a_node_list )
 {
 
@@ -52,14 +41,14 @@ Describe( a_node_list )
 
   It( stores_other_nodes )
   {
-    AssertThat( lua->assert_that( table_element( model_name, new_node_name ) ), Equals( true ) );
-    AssertThat( lua->assert_that( table_element( model_name, another_new_node_name ) ), Equals( true ) );
+    AssertThat( lua->assert_that( the::model::index_lua_table( model_name, new_node_name ) ), Equals( true ) );
+    AssertThat( lua->assert_that( the::model::index_lua_table( model_name, another_new_node_name ) ), Equals( true ) );
   }
 
   It( can_delete_node_by_name )
   {
     nodelist->delete_node( new_node_name );
-    AssertThat( lua->assert_that( table_element( model_name, new_node_name ) ), Equals( false ) );
+    AssertThat( lua->assert_that( the::model::index_lua_table( model_name, new_node_name ) ), Equals( false ) );
   }
 
   It( handles_nonexisting_key_deletion )
@@ -70,8 +59,8 @@ Describe( a_node_list )
   It( deletes_all_nodes_when_cleared )
   {
     nodelist->clear();
-    AssertThat( lua->assert_that( table_element( model_name, new_node_name ) ), Equals( false ) );
-    AssertThat( lua->assert_that( table_element( model_name, another_new_node_name ) ), Equals( false ) );
+    AssertThat( lua->assert_that( the::model::index_lua_table( model_name, new_node_name ) ), Equals( false ) );
+    AssertThat( lua->assert_that( the::model::index_lua_table( model_name, another_new_node_name ) ), Equals( false ) );
   }
 
   std::unique_ptr< the::model::NodeList > nodelist;

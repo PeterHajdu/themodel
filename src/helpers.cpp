@@ -19,6 +19,12 @@ const std::string path_from( const std::vector< std::string >& names )
   return concatenated_name;
 }
 
+const std::string
+index_lua_table( const std::string& table, const std::string& key )
+{
+  return table + "[\"" + key + "\"]";
+}
+
 }
 
 }

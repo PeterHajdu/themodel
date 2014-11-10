@@ -30,6 +30,8 @@ inline const std::string to_lua_string< std::string >( const std::string& value 
   return std::string( "\"" ) + value + "\"";
 }
 
+const std::string index_lua_table( const std::string& table, const std::string& key );
+
 class AutoDeregister final
 {
   public:

@@ -49,6 +49,11 @@ Describe(a_node)
       AssertThat( lua->assert_that( child_path ), Equals( false ) );
     }
 
+    It( exposes_its_name )
+    {
+      AssertThat( root_node->name(), Equals( root_name ) );
+    }
+
     const std::string root_name{ "the_root" };
     const std::string node_name{ "a_node" };
     const std::string child_path{ the::model::path_from( { root_name, node_name } ) };

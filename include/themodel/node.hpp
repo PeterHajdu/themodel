@@ -1,8 +1,9 @@
 #pragma once
 
-#include <string>
 #include <sol.hpp>
 #include <themodel/helpers.hpp>
+#include <string>
+#include <memory>
 
 namespace the
 {
@@ -15,11 +16,15 @@ class Lua;
 class Node
 {
   public:
+    typedef std::unique_ptr< Node > Pointer;
+
     Node( const std::string& name, Lua& lua );
     Node( const std::string& name, Node& parent );
     Node( const Node& ) = delete;
     Node& operator=( const Node& ) = delete;
+    const std::string& name() const;
 
+    virtual ~Node() = default;
   private:
     void register_to( sol::table& );
 

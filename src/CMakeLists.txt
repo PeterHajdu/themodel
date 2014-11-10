@@ -3,6 +3,7 @@ set(SOURCE_FILES
   node.cpp
   lua.cpp
   helpers.cpp
+  node_list.cpp
     )
 
 add_library(themodel STATIC ${SOURCE_FILES})

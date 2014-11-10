@@ -34,6 +34,12 @@ Node::register_to( sol::table& table )
   table.set( m_name, m_table );
 }
 
+const std::string&
+Node::name() const
+{
+  return m_name;
+}
+
 }
 
 }

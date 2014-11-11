@@ -13,16 +13,35 @@ namespace model
 {
 
 class Retriever;
+class NodeBase
+{
+  public:
+    typedef std::unique_ptr< NodeBase > Pointer;
+    NodeBase( const std::string& name )
+      : m_name( name )
+    {
+    }
 
-class Node
+    const std::string& name() const
+    {
+      return m_name;
+    }
+
+    virtual ~NodeBase() = default;
+
+  protected:
+    const std::string m_name;
+};
+
+class Node : public NodeBase
 {
   public:
     typedef std::unique_ptr< Node > Pointer;
 
     Node( const std::string& name, Retriever );
+
     Node( const Node& ) = delete;
     Node& operator=( const Node& ) = delete;
-    const std::string& name() const;
 
     virtual ~Node() = default;
   private:
@@ -31,7 +50,6 @@ class Node
     Lua& m_lua;
     sol::table m_table;
     sol::table m_parent_table;
-    const std::string m_name;
 
     template < typename T >
     friend class Variable;

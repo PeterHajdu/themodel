@@ -11,7 +11,7 @@ NodeList::NodeList( const std::string& name, Retriever retriever )
 }
 
 void
-NodeList::add_node( Node::Pointer&& new_node )
+NodeList::add_node( NodeBase::Pointer&& new_node )
 {
   m_nodes.emplace( std::make_pair( new_node->name(), std::move( new_node ) ) );
 }

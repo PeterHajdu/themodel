@@ -7,21 +7,10 @@ namespace the
 namespace model
 {
 
-Node::Node( const std::string& name, Lua& lua )
-  : m_lua( lua )
+Node::Node( const std::string& name, Retriever retriever )
+  : m_lua( retriever.lua )
   , m_table( m_lua.state().create_table() )
-  , m_parent_table( m_lua.state().global_table() )
-  , m_name( name )
-  , m_deregister( m_name, m_parent_table )
-{
-  register_to( m_parent_table );
-}
-
-
-Node::Node( const std::string& name, Node& parent )
-  : m_lua( parent.m_lua )
-  , m_table( m_lua.state().create_table() )
-  , m_parent_table( parent.m_table )
+  , m_parent_table( retriever.parent )
   , m_name( name )
   , m_deregister( m_name, m_parent_table )
 {

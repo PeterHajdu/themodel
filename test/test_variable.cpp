@@ -16,6 +16,12 @@ Describe(a_variable)
     variable.reset( new the::model::Variable< int >( variable_name, int( initial_value ), *node ) );
   }
 
+  It( registers_itself_to_the_global_table )
+  {
+    the::model::Variable< int > variable( variable_name, int( initial_value ), *lua );
+    AssertThat( lua->assert_that( variable_name ), Equals( true ) );
+  }
+
   It( registers_itself_to_the_parent_node )
   {
     AssertThat( lua->assert_that( variable_path ), Equals( true ) );

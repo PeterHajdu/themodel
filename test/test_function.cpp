@@ -35,6 +35,12 @@ Describe(a_function)
          } ) );
   }
 
+  It( registers_itself_to_the_global_table )
+  {
+    the::model::Function fun( function_name, *lua, []() {} );
+    AssertThat( lua->assert_that( function_name ), Equals( true ) );
+  }
+
   It( registers_itself_to_the_parent_node )
   {
     AssertThat( lua->assert_that( function_path ), Equals( true ) );

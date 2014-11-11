@@ -12,8 +12,7 @@ namespace model
 class NodeList : public Node
 {
   public:
-    NodeList( const std::string& name, Lua& lua );
-    NodeList( const std::string& name, Node& parent );
+    NodeList( const std::string& name, Retriever retriever );
     virtual ~NodeList() = default;
 
     void add_node( Node::Pointer&& new_node );

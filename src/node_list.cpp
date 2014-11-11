@@ -5,13 +5,8 @@ namespace the
 namespace model
 {
 
-NodeList::NodeList( const std::string& name, Lua& lua )
-  : Node( name, lua )
-{
-}
-
-NodeList::NodeList( const std::string& name, Node& parent )
-  : Node( name, parent )
+NodeList::NodeList( const std::string& name, Retriever retriever )
+  : Node( name, retriever )
 {
 }
 

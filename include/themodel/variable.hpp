@@ -34,12 +34,12 @@ class Variable
       return m_value;
     }
 
-    //todo: should return this
-    T& operator=( const T& new_value )
+    typedef Variable< T, OwningPolicy > MyType;
+    MyType& operator=( const T& new_value )
     {
       m_value = new_value;
       refresh_lua_value();
-      return m_value;
+      return *this;
     }
 
   private:

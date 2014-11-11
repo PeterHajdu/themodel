@@ -12,7 +12,6 @@ namespace the
 namespace model
 {
 
-class Retriever;
 class NodeBase
 {
   public:
@@ -33,12 +32,65 @@ class NodeBase
     const std::string m_name;
 };
 
+
+class Owner final
+{
+  public:
+    Owner( const std::string& name, sol::table& parent_table )
+      : name( name )
+      , parent_table( parent_table )
+    {
+    }
+
+    ~Owner()
+    {
+      parent_table.set( name, sol::nil );
+    }
+
+  private:
+    const std::string& name;
+    sol::table& parent_table;
+};
+
+template < typename Parent >
+Lua& retrieve_lua( Parent& parent )
+{
+  return parent.m_lua;
+}
+
+template <>
+inline Lua& retrieve_lua< Lua >( Lua& parent )
+{
+  return parent;
+}
+
+template < typename Parent >
+sol::table retrieve_table( Parent& parent )
+{
+  return parent.m_table;
+}
+
+template <>
+inline sol::table retrieve_table< Lua >( Lua& parent )
+{
+  return parent.state().global_table();
+}
+
+template < class OwningPolicy >
 class Node : public NodeBase
 {
   public:
-    typedef std::unique_ptr< Node > Pointer;
+    template< typename Parent >
+    Node( const std::string& name, Parent& parent )
+      : NodeBase( name )
+      , m_lua( retrieve_lua( parent ) )
+      , m_table( m_lua.state().create_table() )
+      , m_parent_table( retrieve_table( parent ) )
+      , m_owning_policy( m_name, m_parent_table )
+    {
+      m_parent_table.set( m_name, m_table );
+    }
 
-    Node( const std::string& name, Retriever );
 
     Node( const Node& ) = delete;
     Node& operator=( const Node& ) = delete;
@@ -54,30 +106,17 @@ class Node : public NodeBase
     template < typename T >
     friend class Variable;
     friend class Function;
-    friend class Retriever;
 
-    AutoDeregister m_deregister;
+
+    template < typename Parent >
+    friend sol::table retrieve_table( Parent& parent );
+    template < typename Parent >
+    friend Lua& retrieve_lua( Parent& parent );
+
+    OwningPolicy m_owning_policy;
 };
 
-class Retriever
-{
-  public:
-    Retriever( Lua& lua )
-      : lua( lua )
-      , parent( lua.state().global_table() )
-    {
-    }
-
-    Retriever( Node& node )
-      : lua( node.m_lua )
-      , parent( node.m_table )
-    {
-    }
-
-
-    Lua& lua;
-    sol::table parent;
-};
+typedef Node< Owner > OwningNode;
 
 }
 

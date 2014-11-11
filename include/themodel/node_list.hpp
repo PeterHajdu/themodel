@@ -9,10 +9,15 @@ namespace the
 namespace model
 {
 
-class NodeList : public Node
+class NodeList : public OwningNode
 {
   public:
-    NodeList( const std::string& name, Retriever retriever );
+    template < typename Parent >
+    NodeList( const std::string& name, Parent& parent )
+      : Node( name, parent )
+    {
+    }
+
     virtual ~NodeList() = default;
 
     void add_node( NodeBase::Pointer&& new_node );

@@ -14,9 +14,9 @@ namespace model
 class Function
 {
   public:
-    template < typename F >
-    Function( const std::string& name, Retriever retriever, F function )
-      : m_parent_table( retriever.parent )
+    template < typename F, typename Parent >
+    Function( const std::string& name, Parent& parent, F function )
+      : m_parent_table( retrieve_table( parent ) )
       , m_name( name )
       , m_deregister( m_name, m_parent_table )
     {

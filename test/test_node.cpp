@@ -12,7 +12,7 @@ Describe(a_node)
     void SetUp()
     {
       lua.reset( new the::model::Lua() );
-      root_node.reset( new the::model::Node( node_name, *lua ) );
+      root_node.reset( new the::model::OwningNode( node_name, *lua ) );
     }
 
     It( is_exported_to_lua )
@@ -22,7 +22,7 @@ Describe(a_node)
 
     const std::string node_name{ "a_node" };
     std::unique_ptr< the::model::Lua > lua;
-    std::unique_ptr< the::model::Node > root_node;
+    std::unique_ptr< the::model::OwningNode > root_node;
   };
 
   Describe( a_child_node )
@@ -30,19 +30,19 @@ Describe(a_node)
     void SetUp()
     {
       lua.reset( new the::model::Lua() );
-      root_node.reset( new the::model::Node( root_name, *lua ) );
+      root_node.reset( new the::model::OwningNode( root_name, *lua ) );
     }
 
     It( can_be_registered_under_a_node )
     {
-      the::model::Node child_node( node_name, *root_node );
+      the::model::OwningNode child_node( node_name, *root_node );
       AssertThat( lua->assert_that( child_path ), Equals( true ) );
     }
 
     It( should_deregister_itself_when_deleted )
     {
       {
-        the::model::Node child_node( node_name, *root_node );
+        the::model::OwningNode child_node( node_name, *root_node );
         AssertThat( lua->assert_that( child_path ), Equals( true ) );
       }
 
@@ -58,7 +58,8 @@ Describe(a_node)
     const std::string node_name{ "a_node" };
     const std::string child_path{ the::model::path_from( { root_name, node_name } ) };
     std::unique_ptr< the::model::Lua > lua;
-    std::unique_ptr< the::model::Node > root_node;
+    std::unique_ptr< the::model::OwningNode > root_node;
   };
+
 };
 

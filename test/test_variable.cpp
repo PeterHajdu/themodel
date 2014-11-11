@@ -12,7 +12,7 @@ Describe(a_variable)
   void SetUp()
   {
     lua.reset( new the::model::Lua() );
-    node.reset( new the::model::Node( node_name, *lua ) );
+    node.reset( new the::model::OwningNode( node_name, *lua ) );
     variable.reset( new the::model::Variable< int >( variable_name, int( initial_value ), *node ) );
   }
 
@@ -96,7 +96,7 @@ Describe(a_variable)
   const std::string variable_name{ "a_variable" };
   const std::string variable_path{ the::model::path_from( { node_name, variable_name } ) };
   std::unique_ptr< the::model::Lua > lua;
-  std::unique_ptr< the::model::Node > node;
+  std::unique_ptr< the::model::OwningNode > node;
   std::unique_ptr< the::model::Variable< int > > variable;
 };
 

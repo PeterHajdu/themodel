@@ -5,11 +5,6 @@ namespace the
 namespace model
 {
 
-NodeList::NodeList( const std::string& name, Retriever retriever )
-  : Node( name, retriever )
-{
-}
-
 void
 NodeList::add_node( NodeBase::Pointer&& new_node )
 {

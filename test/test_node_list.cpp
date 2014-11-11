@@ -13,8 +13,8 @@ Describe( a_node_list )
   {
     lua.reset( new the::model::Lua() );
     nodelist.reset( new the::model::NodeList( model_name, *lua ) );
-    nodelist->add_node( the::model::Node::Pointer( new the::model::Node( new_node_name, *nodelist ) ) );
-    nodelist->add_node( the::model::Node::Pointer( new the::model::Node( another_new_node_name, *nodelist ) ) );
+    nodelist->add_node( the::model::OwningNode::Pointer( new the::model::OwningNode( new_node_name, *nodelist ) ) );
+    nodelist->add_node( the::model::OwningNode::Pointer( new the::model::OwningNode( another_new_node_name, *nodelist ) ) );
   }
 
   void TearDown()
@@ -24,7 +24,7 @@ Describe( a_node_list )
 
   It( is_a_node )
   {
-    the::model::Node& node_reference( *nodelist );
+    the::model::OwningNode& node_reference( *nodelist );
     (void)node_reference;
   }
 

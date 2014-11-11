@@ -15,9 +15,10 @@ template < typename T >
 class Variable
 {
   public:
-    Variable( const std::string& name, T&& initial_value, Retriever retriever )
+    template < typename Parent >
+    Variable( const std::string& name, T&& initial_value, Parent& parent )
       : m_value( initial_value )
-      , m_parent_table( retriever.parent )
+      , m_parent_table( retrieve_table( parent ) )
       , m_name( name )
       , m_deregister( m_name, m_parent_table )
     {

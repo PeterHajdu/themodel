@@ -22,7 +22,7 @@ Describe(a_function)
   void SetUp()
   {
     lua.reset( new the::model::Lua() );
-    node.reset( new the::model::Node( node_name, *lua ) );
+    node.reset( new the::model::OwningNode( node_name, *lua ) );
 
     was_called = false;
     function.reset( new the::model::Function(
@@ -85,7 +85,7 @@ Describe(a_function)
   const std::string function_name{ "a_function" };
   const std::string function_path{ the::model::path_from( { node_name, function_name } ) };
   std::unique_ptr< the::model::Lua > lua;
-  std::unique_ptr< the::model::Node > node;
+  std::unique_ptr< the::model::OwningNode > node;
   std::unique_ptr< the::model::Function > function;
 };
 

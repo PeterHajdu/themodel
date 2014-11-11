@@ -11,7 +11,7 @@ namespace the
 namespace model
 {
 
-template < typename T >
+template < typename T, typename OwningPolicy = Owner >
 class Variable
 {
   public:
@@ -20,7 +20,7 @@ class Variable
       : m_value( initial_value )
       , m_parent_table( retrieve_table( parent ) )
       , m_name( name )
-      , m_deregister( m_name, m_parent_table )
+      , m_owning_policy( m_name, m_value, m_parent_table )
     {
       refresh_lua_value();
     }
@@ -34,6 +34,7 @@ class Variable
       return m_value;
     }
 
+    //todo: should return this
     T& operator=( const T& new_value )
     {
       m_value = new_value;
@@ -56,7 +57,7 @@ class Variable
     sol::table m_parent_table;
     const std::string m_name;
 
-    AutoDeregister m_deregister;
+    OwningPolicy m_owning_policy;
 };
 
 }

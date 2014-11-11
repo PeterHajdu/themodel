@@ -16,6 +16,14 @@ Describe(a_variable)
     variable.reset( new the::model::Variable< int >( variable_name, int( initial_value ), *node ) );
   }
 
+  It( can_refer_to_an_exported_value )
+  {
+    the::model::Variable< int, the::model::Reference > new_variable( variable_name, initial_value + 10, *node );
+    assert_has_value( initial_value );
+    new_variable = initial_value + 10;
+    assert_has_value( initial_value + 10 );
+  }
+
   It( registers_itself_to_the_global_table )
   {
     the::model::Variable< int > variable( variable_name, int( initial_value ), *lua );

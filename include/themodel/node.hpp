@@ -36,7 +36,8 @@ class NodeBase
 class Owner final
 {
   public:
-    Owner( const std::string& name, sol::table& table, sol::table& parent_table )
+    template< typename T >
+    Owner( const std::string& name, T& table, sol::table& parent_table )
       : name( name )
       , parent_table( parent_table )
     {
@@ -56,9 +57,10 @@ class Owner final
 class Reference final
 {
   public:
-    Reference( const std::string& name, sol::table& table, sol::table& parent_table )
+    template< typename T >
+    Reference( const std::string& name, T& table, sol::table& parent_table )
     {
-      table = parent_table.get< sol::table >( name );
+      table = parent_table.get< T >( name );
     }
 };
 
@@ -112,7 +114,7 @@ class Node : public NodeBase
     sol::table m_table;
     sol::table m_parent_table;
 
-    template < typename T >
+    template < typename T, typename OP >
     friend class Variable;
     friend class Function;
 

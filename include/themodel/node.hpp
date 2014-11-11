@@ -36,10 +36,11 @@ class NodeBase
 class Owner final
 {
   public:
-    Owner( const std::string& name, sol::table& parent_table )
+    Owner( const std::string& name, sol::table& table, sol::table& parent_table )
       : name( name )
       , parent_table( parent_table )
     {
+      parent_table.set( name, table );
     }
 
     ~Owner()
@@ -50,6 +51,15 @@ class Owner final
   private:
     const std::string& name;
     sol::table& parent_table;
+};
+
+class Reference final
+{
+  public:
+    Reference( const std::string& name, sol::table& table, sol::table& parent_table )
+    {
+      table = parent_table.get< sol::table >( name );
+    }
 };
 
 template < typename Parent >
@@ -86,9 +96,8 @@ class Node : public NodeBase
       , m_lua( retrieve_lua( parent ) )
       , m_table( m_lua.state().create_table() )
       , m_parent_table( retrieve_table( parent ) )
-      , m_owning_policy( m_name, m_parent_table )
+      , m_owning_policy( m_name, m_table, m_parent_table )
     {
-      m_parent_table.set( m_name, m_table );
     }
 
 
@@ -117,6 +126,7 @@ class Node : public NodeBase
 };
 
 typedef Node< Owner > OwningNode;
+typedef Node< Reference > ReferenceNode;
 
 }
 

@@ -12,7 +12,7 @@ Describe( a_node_list )
   void SetUp()
   {
     lua.reset( new the::model::Lua() );
-    nodelist.reset( new the::model::NodeList( model_name, *lua ) );
+    nodelist.reset( new the::model::OwningNodeList( model_name, *lua ) );
     nodelist->add_node( the::model::OwningNode::Pointer( new the::model::OwningNode( new_node_name, *nodelist ) ) );
     nodelist->add_node( the::model::OwningNode::Pointer( new the::model::OwningNode( another_new_node_name, *nodelist ) ) );
   }
@@ -63,7 +63,7 @@ Describe( a_node_list )
     AssertThat( lua->assert_that( the::model::index_lua_table( model_name, another_new_node_name ) ), Equals( false ) );
   }
 
-  std::unique_ptr< the::model::NodeList > nodelist;
+  std::unique_ptr< the::model::OwningNodeList > nodelist;
   std::unique_ptr< the::model::Lua > lua;
   const std::string model_name{ "the_nodelist" };
 

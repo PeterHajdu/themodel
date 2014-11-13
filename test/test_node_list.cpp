@@ -22,6 +22,18 @@ Describe( a_node_list )
     nodelist.reset();
   }
 
+  It( is_possible_to_refer_to_the_same_node_list_with_several_references )
+  {
+    {
+      the::model::NodeList< the::model::Reference > reference_list( model_name, *lua );
+      const std::string third_node{ "third node" };
+      reference_list.add_node( the::model::OwningNode::Pointer( new the::model::OwningNode( third_node, *nodelist ) ) );
+      AssertThat( lua->assert_that( the::model::index_lua_table( model_name, third_node ) ), Equals( true ) );
+    }
+
+    AssertThat( lua->assert_that( the::model::index_lua_table( model_name, another_new_node_name ) ), Equals( true ) );
+  }
+
   It( is_a_node )
   {
     the::model::OwningNode& node_reference( *nodelist );

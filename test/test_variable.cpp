@@ -102,6 +102,7 @@ Describe(a_variable)
   It( is_a_tree_node )
   {
     the::model::TreeNode& as_tree_node( *variable );
+    (void)as_tree_node;
   }
 
   It( dumps_its_value_as_string )

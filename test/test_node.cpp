@@ -42,6 +42,7 @@ Describe(a_node)
     It( is_a_tree_node )
     {
       the::model::TreeNode& as_tree_node( *root_node );
+      (void)as_tree_node;
     }
 
     const std::string node_name{ "a_node" };

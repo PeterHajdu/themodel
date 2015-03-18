@@ -90,6 +90,7 @@ Describe(a_function)
   It( is_a_tree_node )
   {
     the::model::TreeNode& as_tree_node( *function );
+    (void)as_tree_node;
   }
 
   const std::string node_name{ "a_node" };

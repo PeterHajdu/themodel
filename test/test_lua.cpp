@@ -63,6 +63,7 @@ Describe(a_lua)
     It( is_a_tree_node )
     {
       the::model::TreeNode& as_a_tree( *lua );
+      (void)as_a_tree;
     }
 
     std::unique_ptr< the::model::Lua > lua;

@@ -35,6 +35,12 @@ Describe(a_function)
          } ) );
   }
 
+  void TearDown()
+  {
+    function.reset();
+    node.reset();
+  }
+
   It( registers_itself_to_the_global_table )
   {
     the::model::Function fun( function_name, *lua, []() {} );
@@ -79,6 +85,11 @@ Describe(a_function)
   {
     AssertThat( lua->run( std::string( "dogfood = " ) + function_path + "()" ), Equals( true ) );
     AssertThat( lua->assert_equals( "dogfood", return_value ), Equals( true ) );
+  }
+
+  It( is_a_tree_node )
+  {
+    the::model::TreeNode& as_tree_node( *function );
   }
 
   const std::string node_name{ "a_node" };

@@ -12,15 +12,15 @@ namespace model
 {
 
 template < typename T, typename OwningPolicy = Owner >
-class Variable
+class Variable : public TreeNode
 {
   public:
     template < typename Parent >
-    Variable( const std::string& name, T&& initial_value, Parent& parent )
-      : m_value( initial_value )
+    Variable( std::string name_, T&& initial_value, Parent& parent )
+      : TreeNode( std::move( name_ ), parent, OwningPolicy::owner_type )
+      , m_value( initial_value )
       , m_parent_table( retrieve_table( parent ) )
-      , m_name( name )
-      , m_owning_policy( m_name, m_value, m_parent_table )
+      , m_owning_policy( name, m_value, m_parent_table )
     {
       refresh_lua_value();
     }
@@ -42,20 +42,24 @@ class Variable
       return *this;
     }
 
+    virtual std::string dump() const override
+    {
+      return to_lua_string( m_value );
+    }
+
   private:
     void refresh_lua_value()
     {
-      m_parent_table.set( m_name, m_value );
+      m_parent_table.set( name, m_value );
     }
 
     void retrieve_value_from_lua() const
     {
-      m_value = m_parent_table.get< T >( m_name );
+      m_value = m_parent_table.get< T >( name );
     }
 
     mutable T m_value;
     sol::table m_parent_table;
-    const std::string m_name;
 
     OwningPolicy m_owning_policy;
 };

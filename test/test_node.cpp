@@ -7,6 +7,25 @@ using namespace igloo;
 
 Describe(a_node)
 {
+  Describe( owner_policies )
+  {
+    Describe( an_owner )
+    {
+      It( has_an_owner_indicator_field )
+      {
+        AssertThat( the::model::Owner::owner_type, Equals( the::model::OwnerType::owner ) );
+      }
+    };
+
+    Describe( a_reference )
+    {
+      It( has_an_owner_indicator_field )
+      {
+        AssertThat( the::model::Reference::owner_type, Equals( the::model::OwnerType::reference ) );
+      }
+    };
+  };
+
   Describe( a_root_node )
   {
     void SetUp()
@@ -18,6 +37,11 @@ Describe(a_node)
     It( is_exported_to_lua )
     {
       AssertThat( lua->assert_that( node_name ), Equals( true ) );
+    }
+
+    It( is_a_tree_node )
+    {
+      the::model::TreeNode& as_tree_node( *root_node );
     }
 
     const std::string node_name{ "a_node" };
@@ -51,7 +75,7 @@ Describe(a_node)
 
     It( exposes_its_name )
     {
-      AssertThat( root_node->name(), Equals( root_name ) );
+      AssertThat( root_node->name, Equals( root_name ) );
     }
 
     const std::string root_name{ "the_root" };

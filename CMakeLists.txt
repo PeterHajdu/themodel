@@ -33,7 +33,7 @@ include_directories(include)
 include_directories(thirdparty/sol)
 include_directories(thirdparty/igloo)
 
-add_definitions(-std=c++11
+add_definitions(-std=c++14
                 -Wall
                 -Werror
                 -g

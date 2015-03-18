@@ -14,16 +14,16 @@ class NodeList : public Node< OwningPolicy >
 {
   public:
     template < typename Parent >
-    NodeList( const std::string& name, Parent& parent )
-      : Node< OwningPolicy >( name, parent )
+    NodeList( std::string name, Parent& parent )
+      : Node< OwningPolicy >( std::move( name ), parent )
     {
     }
 
     virtual ~NodeList() = default;
 
-    void add_node( NodeBase::Pointer&& new_node )
+    void add_node( TreeNode::Pointer&& new_node )
     {
-      m_nodes.emplace( std::make_pair( new_node->name(), std::move( new_node ) ) );
+      m_nodes.emplace( std::make_pair( new_node->name, std::move( new_node ) ) );
     }
 
     void delete_node( const std::string& name )
@@ -44,7 +44,7 @@ class NodeList : public Node< OwningPolicy >
     }
 
   private:
-    std::unordered_map< std::string, NodeBase::Pointer > m_nodes;
+    std::unordered_map< std::string, TreeNode::Pointer > m_nodes;
 };
 
 typedef NodeList< Owner > OwningNodeList;

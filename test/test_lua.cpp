@@ -1,4 +1,5 @@
 #include <themodel/lua.hpp>
+#include <themodel/tree.hpp>
 #include <sol.hpp>
 #include <igloo/igloo_alt.h>
 
@@ -57,6 +58,11 @@ Describe(a_lua)
     {
       AssertThat( lua->assert_equals( "true", true ), Equals( true ) );
       AssertThat( lua->assert_equals( "false", true ), Equals( false ) );
+    }
+
+    It( is_a_tree_node )
+    {
+      the::model::TreeNode& as_a_tree( *lua );
     }
 
     std::unique_ptr< the::model::Lua > lua;

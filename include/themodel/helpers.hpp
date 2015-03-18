@@ -10,7 +10,14 @@ namespace the
 namespace model
 {
 
-const std::string path_from( const std::vector< std::string >& names );
+enum class OwnerType : int
+{
+  owner,
+  reference
+};
+
+using Path = std::vector< std::string >;
+const std::string path_from( const Path& names );
 
 template < typename T >
 const std::string to_lua_string( const T& value )

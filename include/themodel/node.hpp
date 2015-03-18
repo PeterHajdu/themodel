@@ -12,27 +12,6 @@ namespace the
 namespace model
 {
 
-class NodeBase
-{
-  public:
-    typedef std::unique_ptr< NodeBase > Pointer;
-    NodeBase( const std::string& name )
-      : m_name( name )
-    {
-    }
-
-    const std::string& name() const
-    {
-      return m_name;
-    }
-
-    virtual ~NodeBase() = default;
-
-  protected:
-    const std::string m_name;
-};
-
-
 class Owner final
 {
   public:
@@ -49,6 +28,7 @@ class Owner final
       parent_table.set( name, sol::nil );
     }
 
+    static const OwnerType owner_type;
   private:
     const std::string& name;
     sol::table& parent_table;
@@ -62,6 +42,7 @@ class Reference final
     {
       table = parent_table.get< T >( name );
     }
+    static const OwnerType owner_type;
 };
 
 template < typename Parent >
@@ -89,22 +70,26 @@ inline sol::table retrieve_table< Lua >( Lua& parent )
 }
 
 template < class OwningPolicy >
-class Node : public NodeBase
+class Node : public TreeNode
 {
   public:
     template< typename Parent >
-    Node( const std::string& name, Parent& parent )
-      : NodeBase( name )
+    Node( std::string name_, Parent& parent )
+      : TreeNode( std::move( name_ ), parent, OwningPolicy::owner_type )
       , m_lua( retrieve_lua( parent ) )
       , m_table( m_lua.state().create_table() )
       , m_parent_table( retrieve_table( parent ) )
-      , m_owning_policy( m_name, m_table, m_parent_table )
+      , m_owning_policy( name, m_table, m_parent_table )
     {
     }
 
-
     Node( const Node& ) = delete;
     Node& operator=( const Node& ) = delete;
+
+    virtual std::string dump() const override
+    {
+      return name;
+    }
 
     virtual ~Node() = default;
   private:

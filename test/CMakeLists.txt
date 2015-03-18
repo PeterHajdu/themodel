@@ -9,6 +9,7 @@ set(TEST_SOURCE_FILES
     test_variable.cpp
     test_function.cpp
     test_node_list.cpp
+    test_model_tree.cpp
     )
 
 

@@ -1,8 +1,9 @@
 #pragma once
 
+#include <themodel/tree.hpp>
+#include <themodel/helpers.hpp>
 #include <sol.hpp>
 #include <string>
-#include <themodel/helpers.hpp>
 
 namespace the
 {
@@ -10,7 +11,7 @@ namespace the
 namespace model
 {
 
-class Lua
+class Lua : public TreeNode
 {
   public:
     Lua();
@@ -24,6 +25,8 @@ class Lua
 
     template < typename T >
     bool assert_equals( const std::string& a, const T& with );
+
+    virtual std::string dump() const override final;
 
   private:
     sol::state m_lua_state;

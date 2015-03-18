@@ -99,6 +99,16 @@ Describe(a_variable)
     assert_works_with< bool >( true, false );
   }
 
+  It( is_a_tree_node )
+  {
+    the::model::TreeNode& as_tree_node( *variable );
+  }
+
+  It( dumps_its_value_as_string )
+  {
+    AssertThat( variable->dump(), Equals( std::to_string( initial_value ) ) );
+  }
+
   const int initial_value{ 10 };
   const std::string node_name{ "a_node" };
   const std::string variable_name{ "a_variable" };

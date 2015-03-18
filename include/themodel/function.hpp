@@ -1,9 +1,8 @@
 #pragma once
 
-#include <string>
-
 #include <themodel/node.hpp>
 #include <themodel/helpers.hpp>
+#include <string>
 
 namespace the
 {
@@ -11,24 +10,28 @@ namespace the
 namespace model
 {
 
-class Function
+class Function : public TreeNode
 {
   public:
     template < typename F, typename Parent >
-    Function( const std::string& name, Parent& parent, F function )
-      : m_parent_table( retrieve_table( parent ) )
-      , m_name( name )
-      , m_deregister( m_name, m_parent_table )
+    Function( std::string name_, Parent& parent, F function )
+      : TreeNode( std::move( name_ ), parent )
+      , m_parent_table( retrieve_table( parent ) )
+      , m_deregister( name, m_parent_table )
     {
-      m_parent_table.set_function( m_name, function );
+      m_parent_table.set_function( name, function );
     }
 
     Function( const Function& ) = delete;
     Function& operator=( const Function& ) = delete;
 
+    virtual std::string dump() const override
+    {
+      return name;
+    }
+
   private:
     sol::table m_parent_table;
-    const std::string m_name;
 
     AutoDeregister m_deregister;
 };

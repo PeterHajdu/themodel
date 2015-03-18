@@ -7,6 +7,7 @@ namespace model
 {
 
 Lua::Lua()
+  : TreeNode( "root" )
 {
   m_lua_state.open_libraries( sol::lib::base );
 }
@@ -43,6 +44,12 @@ const std::string&
 Lua::error_message() const
 {
   return m_last_error_message;
+}
+
+std::string
+Lua::dump() const
+{
+  return name;
 }
 
 }

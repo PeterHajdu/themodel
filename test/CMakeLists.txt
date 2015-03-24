@@ -16,7 +16,7 @@ set(TEST_SOURCE_FILES
 
 
 add_executable(test_runner EXCLUDE_FROM_ALL ${TEST_SOURCE_FILES})
-target_link_libraries(test_runner themodel lua zmq ${LIBS})
+target_link_libraries(test_runner themodel lua zmq pthread ${LIBS})
 
 get_target_property(TEST_RUNNER_BIN test_runner LOCATION) # for running
 

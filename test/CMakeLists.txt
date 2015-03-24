@@ -10,6 +10,7 @@ set(TEST_SOURCE_FILES
     test_function.cpp
     test_node_list.cpp
     test_model_tree.cpp
+    test_json_exporter.cpp
     )
 
 

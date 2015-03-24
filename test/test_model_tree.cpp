@@ -1,36 +1,8 @@
-#include <themodel/tree.hpp>
+#include "test_tree_node.hpp"
 #include <themodel/helpers.hpp>
 #include <igloo/igloo_alt.h>
 
 using namespace igloo;
-
-namespace test
-{
-
-class TreeNode : public the::model::TreeNode
-{
-  public:
-    TreeNode( std::string name )
-      : the::model::TreeNode( std::move( name ) )
-    {
-    }
-
-    TreeNode(
-        std::string name,
-        the::model::TreeNode& parent,
-        the::model::OwnerType owner_type = the::model::OwnerType::owner )
-      : the::model::TreeNode( std::move( name ), parent, owner_type )
-    {
-    }
-
-    virtual std::string dump() const override final
-    {
-      return name;
-    }
-
-};
-
-}
 
 Describe( a_tree_node )
 {

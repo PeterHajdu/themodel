@@ -4,6 +4,7 @@ set(SOURCE_FILES
   helpers.cpp
   node.cpp
   jsoncpp.cpp
+  json_exporter.cpp
     )
 
 add_library(themodel STATIC ${SOURCE_FILES})

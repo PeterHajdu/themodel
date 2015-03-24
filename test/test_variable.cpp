@@ -16,6 +16,11 @@ Describe(a_variable)
     variable.reset( new the::model::Variable< int >( variable_name, int( initial_value ), *node ) );
   }
 
+  It( holds_meaningful_data )
+  {
+    AssertThat( variable->contains_meaningful_data(), Equals( true ) );
+  }
+
   It( can_refer_to_an_exported_value )
   {
     the::model::Variable< int, the::model::Reference > new_variable( variable_name, initial_value + 10, *node );

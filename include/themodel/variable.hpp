@@ -47,6 +47,11 @@ class Variable : public TreeNode
       return to_lua_string( m_value );
     }
 
+    virtual bool contains_meaningful_data() const override
+    {
+      return true;
+    }
+
   private:
     void refresh_lua_value()
     {

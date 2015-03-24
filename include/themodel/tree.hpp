@@ -46,6 +46,13 @@ class TreeNode
 
     virtual std::string dump() const = 0;
 
+    //todo: Implement new value class to describe functions and nodes without value.
+    //really ugly solution, does not scale well...
+    virtual bool contains_meaningful_data() const
+    {
+      return false;
+    }
+
   private:
     void register_child( TreeNode& child )
     {

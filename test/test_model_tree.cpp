@@ -46,7 +46,12 @@ Describe( a_tree_node )
 
   It( can_dump_its_content )
   {
-    AssertThat( root_node->dump(), Equals( root_name ) );
+    AssertThat( root_node->dump(), Equals( "" ) );
+  }
+
+  It( does_not_hold_meaningful_data_by_default )
+  {
+    AssertThat( root_node->contains_meaningful_data(), Equals( false ) );
   }
 
   const std::string root_name{ "root name" };

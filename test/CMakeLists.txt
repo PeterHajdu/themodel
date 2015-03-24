@@ -11,11 +11,12 @@ set(TEST_SOURCE_FILES
     test_node_list.cpp
     test_model_tree.cpp
     test_json_exporter.cpp
+    test_zmq_remote.cpp
     )
 
 
 add_executable(test_runner EXCLUDE_FROM_ALL ${TEST_SOURCE_FILES})
-target_link_libraries(test_runner themodel lua ${LIBS})
+target_link_libraries(test_runner themodel lua zmq ${LIBS})
 
 get_target_property(TEST_RUNNER_BIN test_runner LOCATION) # for running
 

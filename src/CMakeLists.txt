@@ -5,6 +5,7 @@ set(SOURCE_FILES
   node.cpp
   jsoncpp.cpp
   json_exporter.cpp
+  zmq_remote.cpp
     )
 
 add_library(themodel STATIC ${SOURCE_FILES})

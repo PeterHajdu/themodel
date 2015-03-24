@@ -5,7 +5,7 @@
 
 using namespace igloo;
 
-Describe_Only(a_json_exporter)
+Describe(a_json_exporter)
 {
 
   Json::Value export_tree( const the::model::TreeNode& root )

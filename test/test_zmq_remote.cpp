@@ -22,7 +22,7 @@ class ZmqClient
       zmq::message_t request( message.length() + 1 );
       socket.send( request );
       using namespace std::literals;
-      std::this_thread::sleep_for( 100ms );
+      std::this_thread::sleep_for( 500ms );
     }
 
     const std::string response()

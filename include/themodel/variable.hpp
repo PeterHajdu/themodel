@@ -15,10 +15,10 @@ template < typename T, typename OwningPolicy = Owner >
 class Variable : public TreeNode
 {
   public:
-    template < typename Parent >
-    Variable( std::string name_, T&& initial_value, Parent& parent )
+    template < typename Parent, typename U >
+    Variable( std::string name_, U&& initial_value, Parent& parent )
       : TreeNode( std::move( name_ ), parent, OwningPolicy::owner_type )
-      , m_value( initial_value )
+      , m_value( std::forward<U>( initial_value ) )
       , m_parent_table( retrieve_table( parent ) )
       , m_owning_policy( name, m_value, m_parent_table )
     {
@@ -34,10 +34,11 @@ class Variable : public TreeNode
       return m_value;
     }
 
-    typedef Variable< T, OwningPolicy > MyType;
-    MyType& operator=( const T& new_value )
+    using MyType = Variable< T, OwningPolicy >;
+    template < typename U >
+    MyType& operator=( U&& new_value )
     {
-      m_value = new_value;
+      m_value = std::forward< U >( new_value );
       refresh_lua_value();
       return *this;
     }

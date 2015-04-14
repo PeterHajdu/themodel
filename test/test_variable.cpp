@@ -16,6 +16,13 @@ Describe(a_variable)
     variable.reset( new the::model::Variable< int >( variable_name, int( initial_value ), *node ) );
   }
 
+  It( perfect_forwards_initial_value )
+  {
+    variable.reset();
+    variable = std::make_unique< the::model::Variable< int > >( variable_name, initial_value, *node );
+    assert_has_value( initial_value );
+  }
+
   It( holds_meaningful_data )
   {
     AssertThat( variable->contains_meaningful_data(), Equals( true ) );

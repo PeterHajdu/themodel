@@ -42,6 +42,12 @@ class Hash : public OwningNode
       return *element_iterator->second;
     }
 
+
+    bool has( const Key& key ) const
+    {
+      return m_container.find( key ) != std::end( m_container );
+    }
+
   private:
     using ValuePointer = std::unique_ptr< ValueType >;
     using Container = std::unordered_map< Key, ValuePointer >;

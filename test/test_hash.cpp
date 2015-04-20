@@ -14,6 +14,7 @@ Describe(a_hash)
     lua = std::make_unique< the::model::Lua >();
     node = std::make_unique< the::model::OwningNode >( node_name, *lua );
     hash = std::make_unique< the::model::Hash< std::string, std::string > >( hash_name, *node );
+    (*hash)[ key ] = value;
   }
 
   void assert_has_value( const std::string& key, const std::string& value )
@@ -24,15 +25,19 @@ Describe(a_hash)
 
   It( creates_the_key_if_it_did_not_exist )
   {
-    (*hash)[ key ] = value;
     AssertThat( lua->assert_that( hash_path ), Equals( true ) );
     AssertThat( lua->assert_that( key_path ), Equals( true ) );
   }
 
   It( allows_assignement_via_bracket_operator )
   {
-    (*hash)[ key ] = value;
     assert_has_value( key, value );
+  }
+
+  It( can_check_key_existence )
+  {
+    AssertThat( hash->has( key ), Equals( true ) );
+    AssertThat( hash->has( "unknownkey" ), Equals( false ) );
   }
 
   /*

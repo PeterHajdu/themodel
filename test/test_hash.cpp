@@ -20,7 +20,9 @@ Describe(a_hash)
   void assert_has_value( const std::string& key, const std::string& value )
   {
     AssertThat( static_cast< std::string >( (*hash)[ key ] ) , Equals( value ) );
-    AssertThat( lua->assert_equals( key_path, value ), Equals( true ) );
+    AssertThat(
+        lua->assert_equals( the::model::path_from( { node_name, hash_name, key } ), value ),
+        Equals( true ) );
   }
 
   It( creates_the_key_if_it_did_not_exist )
@@ -34,99 +36,36 @@ Describe(a_hash)
     assert_has_value( key, value );
   }
 
+  It( holds_many_elements )
+  {
+    const std::string another_key( "another_key" );
+    const std::string another_value( "another value" );
+    (*hash)[ another_key ] = another_value;
+    assert_has_value( another_key, another_value );
+  }
+
   It( can_check_key_existence )
   {
     AssertThat( hash->has( key ), Equals( true ) );
     AssertThat( hash->has( "unknownkey" ), Equals( false ) );
   }
 
-  /*
-  It( registers_itself_to_the_global_table )
+  It( allows_iteration_with_range_based_for_loop )
   {
-    the::model::Variable< int > variable( variable_name, int( initial_value ), *lua );
-    AssertThat( lua->assert_that( variable_name ), Equals( true ) );
-  }
+    size_t iterations{ 0 };
+    std::vector< std::string > keys;
+    std::vector< std::string > values;
+    for ( const auto& element : (*hash) )
+    {
+      ++iterations;
+      keys.push_back( element.first );
+      values.push_back( *element.second );
+    }
 
-  It( registers_itself_to_the_parent_node )
-  {
-    AssertThat( lua->assert_that( variable_path ), Equals( true ) );
+    AssertThat( iterations, Equals( 1u ) );
+    AssertThat( keys, Contains( key ) );
+    AssertThat( values, Contains( value ) );
   }
-
-  It( implicitly_converts_to_T )
-  {
-    AssertThat( 5 + *variable, Equals( initial_value + 5 ) );
-  }
-
-  void assert_has_value( int expected_value )
-  {
-    AssertThat( int( *variable ), Equals( expected_value ) );
-    AssertThat( lua->assert_equals( variable_path, expected_value ), Equals( true ) );
-  }
-
-  It( has_an_initial_value )
-  {
-    assert_has_value( initial_value );
-  }
-
-  It( has_assignement_operator )
-  {
-    *variable = 123;
-    assert_has_value( 123 );
-  }
-
-  It( allows_value_setting_from_lua )
-  {
-    const std::string command( variable_path + " = 912" );
-    AssertThat( lua->run( command ), Equals( true ) );
-    assert_has_value( 912 );
-  }
-
-  It( deregisters_itself_when_deleted )
-  {
-    variable.reset();
-    AssertThat( lua->assert_that( variable_path ), Equals( false ) );
-  }
-
-  template < typename T >
-  void assert_works_with( const T& initial_value, const T& test_value )
-  {
-    const std::string name{ "the_variable_name" };
-    const std::string path{ the::model::path_from( { node_name, name } ) };
-    the::model::Variable< T > the_variable( name, T( initial_value ), *node );
-    AssertThat( T( the_variable ), Equals( initial_value ) );
-    AssertThat( lua->assert_equals( path, initial_value ), Equals( true ) );
-
-    the_variable = test_value;
-    AssertThat( T( the_variable ), Equals( test_value ) );
-    AssertThat( lua->assert_equals( path, test_value ), Equals( true ) );
-  }
-
-  It( works_with_string )
-  {
-    assert_works_with< std::string >( "an initial value", "a test value" );
-  }
-
-  It( works_with_double )
-  {
-    assert_works_with< double >( 123.123, -834.12 );
-  }
-
-  It( works_with_bool )
-  {
-    assert_works_with< bool >( true, false );
-  }
-
-  It( is_a_tree_node )
-  {
-    the::model::TreeNode& as_tree_node( *variable );
-    (void)as_tree_node;
-  }
-
-  It( dumps_its_value_as_string )
-  {
-    AssertThat( variable->dump(), Equals( std::to_string( initial_value ) ) );
-  }
-  */
 
   const std::string node_name{ "a_node" };
   const std::string hash_name{ "a_variable" };

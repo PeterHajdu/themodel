@@ -48,6 +48,16 @@ class Hash : public OwningNode
       return m_container.find( key ) != std::end( m_container );
     }
 
+    auto begin()
+    {
+      return std::begin( m_container );
+    }
+
+    auto end()
+    {
+      return std::end( m_container );
+    }
+
   private:
     using ValuePointer = std::unique_ptr< ValueType >;
     using Container = std::unordered_map< Key, ValuePointer >;

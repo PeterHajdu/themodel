@@ -16,11 +16,23 @@ Describe(a_hash)
     hash = std::make_unique< the::model::Hash< std::string, std::string > >( hash_name, *node );
   }
 
+  void assert_has_value( const std::string& key, const std::string& value )
+  {
+    AssertThat( static_cast< std::string >( (*hash)[ key ] ) , Equals( value ) );
+    AssertThat( lua->assert_equals( key_path, value ), Equals( true ) );
+  }
+
   It( creates_the_key_if_it_did_not_exist )
   {
     (*hash)[ key ] = value;
     AssertThat( lua->assert_that( hash_path ), Equals( true ) );
     AssertThat( lua->assert_that( key_path ), Equals( true ) );
+  }
+
+  It( allows_assignement_via_bracket_operator )
+  {
+    (*hash)[ key ] = value;
+    assert_has_value( key, value );
   }
 
   /*

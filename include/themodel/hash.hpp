@@ -3,6 +3,7 @@
 #include <themodel/variable.hpp>
 #include <themodel/node.hpp>
 #include <string>
+#include <cassert>
 #include <unordered_map>
 
 namespace the
@@ -23,10 +24,22 @@ class Hash : public OwningNode
 
     using ValueType = Variable< Value >;
 
-    template < typename K >
-    ValueType& operator[]( K&& key )
+    ValueType& operator[]( const Key& key )
     {
-      return *m_container[ key ];
+      auto element_iterator( m_container.find( key ) );
+      if ( element_iterator == std::end( m_container ) )
+      {
+        bool was_inserted{ false };
+        std::tie( element_iterator, was_inserted ) = m_container.emplace( std::make_pair(
+              key,
+              std::make_unique< ValueType >(
+                key,
+                Value(),
+                *this ) ) );
+        assert( was_inserted );
+      }
+
+      return *element_iterator->second;
     }
 
   private:

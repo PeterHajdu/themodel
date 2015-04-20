@@ -16,9 +16,11 @@ Describe(a_hash)
     hash = std::make_unique< the::model::Hash< std::string, std::string > >( hash_name, *node );
   }
 
-  It( has_bracket_operator )
+  It( creates_the_key_if_it_did_not_exist )
   {
-    (*hash)[ "key" ] = "value";
+    (*hash)[ key ] = value;
+    AssertThat( lua->assert_that( hash_path ), Equals( true ) );
+    AssertThat( lua->assert_that( key_path ), Equals( true ) );
   }
 
   /*
@@ -112,6 +114,9 @@ Describe(a_hash)
   const std::string node_name{ "a_node" };
   const std::string hash_name{ "a_variable" };
   const std::string hash_path{ the::model::path_from( { node_name, hash_name } ) };
+  const std::string key{ "key" };
+  const std::string value{ "value" };
+  const std::string key_path{ the::model::path_from( { node_name, hash_name, key } ) };
   std::unique_ptr< the::model::Lua > lua;
   std::unique_ptr< the::model::OwningNode > node;
   std::unique_ptr< the::model::Hash< std::string, std::string > > hash;

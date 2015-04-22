@@ -58,6 +58,16 @@ class Hash : public OwningNode
       return std::end( m_container );
     }
 
+    auto cbegin() const
+    {
+      return m_container.cbegin();
+    }
+
+    auto cend() const
+    {
+      return m_container.cend();
+    }
+
   private:
     using ValuePointer = std::unique_ptr< ValueType >;
     using Container = std::unordered_map< Key, ValuePointer >;

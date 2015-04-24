@@ -28,10 +28,15 @@ class Variable : public TreeNode
     Variable( const Variable& ) = delete;
     Variable& operator=( const Variable& ) = delete;
 
-    operator T() const
+    T get() const
     {
       retrieve_value_from_lua();
       return m_value;
+    }
+
+    operator T() const
+    {
+      return get();
     }
 
     using MyType = Variable< T, OwningPolicy >;

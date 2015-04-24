@@ -52,6 +52,11 @@ Describe(a_variable)
     AssertThat( 5 + *variable, Equals( initial_value + 5 ) );
   }
 
+  It( has_a_get_function )
+  {
+    AssertThat( variable->get(), Equals( initial_value ) );
+  }
+
   void assert_has_value( int expected_value )
   {
     AssertThat( int( *variable ), Equals( expected_value ) );

@@ -50,6 +50,11 @@ Describe(a_hash)
     AssertThat( hash->has( "unknownkey" ), Equals( false ) );
   }
 
+  It( has_a_getter_function_that_returns_with_the_contained_value )
+  {
+    AssertThat( hash->get( key ), Equals( value ) );
+  }
+
   It( allows_iteration_with_range_based_for_loop )
   {
     size_t iterations{ 0 };

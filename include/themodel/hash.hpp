@@ -42,6 +42,16 @@ class Hash : public OwningNode
       return *element_iterator->second;
     }
 
+    Value get( const Key& key ) const
+    {
+      auto element_iterator( m_container.find( key ) );
+      if ( element_iterator == std::end( m_container ) )
+      {
+        throw std::runtime_error( "Key does not exist!" );
+      }
+
+      return element_iterator->second->get();
+    }
 
     bool has( const Key& key ) const
     {

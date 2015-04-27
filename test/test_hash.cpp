@@ -6,6 +6,13 @@
 
 using namespace igloo;
 
+namespace test
+{
+
+using Hash = the::model::Hash< std::string, std::string >;
+
+}
+
 
 Describe(a_hash)
 {
@@ -13,7 +20,7 @@ Describe(a_hash)
   {
     lua = std::make_unique< the::model::Lua >();
     node = std::make_unique< the::model::OwningNode >( node_name, *lua );
-    hash = std::make_unique< the::model::Hash< std::string, std::string > >( hash_name, *node );
+    hash = std::make_unique< test::Hash >( hash_name, *node );
     (*hash)[ key ] = value;
   }
 
@@ -72,6 +79,20 @@ Describe(a_hash)
     AssertThat( values, Contains( value ) );
   }
 
+  It( calls_observers_if_a_value_changes )
+  {
+    const test::Hash* observer_called_with{ nullptr };
+    hash->observe(
+        [ &observer_called_with ]( const test::Hash& h )
+        {
+          observer_called_with = &h;
+        } );
+
+    const std::string a_new_key{ "new_key" };
+    (*hash)[ a_new_key ] = "foo";
+    AssertThat( observer_called_with, Equals( hash.get() ) );
+  }
+
   const std::string node_name{ "a_node" };
   const std::string hash_name{ "a_variable" };
   const std::string hash_path{ the::model::path_from( { node_name, hash_name } ) };
@@ -80,6 +101,6 @@ Describe(a_hash)
   const std::string key_path{ the::model::path_from( { node_name, hash_name, key } ) };
   std::unique_ptr< the::model::Lua > lua;
   std::unique_ptr< the::model::OwningNode > node;
-  std::unique_ptr< the::model::Hash< std::string, std::string > > hash;
+  std::unique_ptr< test::Hash > hash;
 };
 

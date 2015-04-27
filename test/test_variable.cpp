@@ -6,6 +6,12 @@
 
 using namespace igloo;
 
+namespace test
+{
+
+using Variable = the::model::Variable< int >;
+
+}
 
 Describe(a_variable)
 {
@@ -13,13 +19,13 @@ Describe(a_variable)
   {
     lua.reset( new the::model::Lua() );
     node.reset( new the::model::OwningNode( node_name, *lua ) );
-    variable.reset( new the::model::Variable< int >( variable_name, int( initial_value ), *node ) );
+    variable = std::make_unique< test::Variable >( variable_name, int( initial_value ), *node );
   }
 
   It( perfect_forwards_initial_value )
   {
     variable.reset();
-    variable = std::make_unique< the::model::Variable< int > >( variable_name, initial_value, *node );
+    variable = std::make_unique< test::Variable >( variable_name, initial_value, *node );
     assert_has_value( initial_value );
   }
 
@@ -38,7 +44,7 @@ Describe(a_variable)
 
   It( registers_itself_to_the_global_table )
   {
-    the::model::Variable< int > variable( variable_name, int( initial_value ), *lua );
+    test::Variable variable( variable_name, int( initial_value ), *lua );
     AssertThat( lua->assert_that( variable_name ), Equals( true ) );
   }
 
@@ -127,12 +133,39 @@ Describe(a_variable)
     AssertThat( variable->dump(), Equals( std::to_string( initial_value ) ) );
   }
 
+  It( calls_its_observers_on_change )
+  {
+    const test::Variable* called_with{ nullptr };
+
+    variable->observe(
+        [ &called_with ]( const test::Variable& model ) -> void
+        {
+          called_with = &model;
+        } );
+
+    *variable = 10;
+    AssertThat( called_with, Equals( variable.get() ) );
+  }
+
+  It( does_not_call_observers_without_a_change )
+  {
+    const test::Variable* called_with{ nullptr };
+
+    variable->observe(
+        [ &called_with ]( const test::Variable& model ) -> void
+        {
+          called_with = &model;
+        } );
+
+    AssertThat( called_with == nullptr, Equals( true ) );
+  }
+
   const int initial_value{ 10 };
   const std::string node_name{ "a_node" };
   const std::string variable_name{ "a_variable" };
   const std::string variable_path{ the::model::path_from( { node_name, variable_name } ) };
   std::unique_ptr< the::model::Lua > lua;
   std::unique_ptr< the::model::OwningNode > node;
-  std::unique_ptr< the::model::Variable< int > > variable;
+  std::unique_ptr< test::Variable > variable;
 };
 

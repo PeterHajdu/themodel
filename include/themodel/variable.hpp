@@ -4,6 +4,7 @@
 
 #include <themodel/node.hpp>
 #include <themodel/helpers.hpp>
+#include <themodel/observer.hpp>
 
 namespace the
 {
@@ -12,9 +13,13 @@ namespace model
 {
 
 template < typename T, typename OwningPolicy = Owner >
-class Variable : public TreeNode
+class Variable :
+  public TreeNode,
+  public Observable< Variable< T, OwningPolicy > >
 {
   public:
+    using MyType = Variable< T, OwningPolicy >;
+
     template < typename Parent, typename U >
     Variable( std::string name_, U&& initial_value, Parent& parent )
       : TreeNode( std::move( name_ ), parent, OwningPolicy::owner_type )
@@ -39,12 +44,14 @@ class Variable : public TreeNode
       return get();
     }
 
-    using MyType = Variable< T, OwningPolicy >;
+    using Observable< MyType >::notify;
+
     template < typename U >
     MyType& operator=( U&& new_value )
     {
       m_value = std::forward< U >( new_value );
       refresh_lua_value();
+      notify();
       return *this;
     }
 

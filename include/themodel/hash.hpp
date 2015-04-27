@@ -2,6 +2,7 @@
 
 #include <themodel/variable.hpp>
 #include <themodel/node.hpp>
+#include <themodel/observer.hpp>
 #include <string>
 #include <cassert>
 #include <unordered_map>
@@ -13,9 +14,12 @@ namespace model
 {
 
 template < typename Key, typename Value >
-class Hash : public OwningNode
+class Hash :
+  public OwningNode,
+  public Observable< Hash< Key, Value > >
 {
   public:
+
     template< typename Parent >
     Hash( std::string name_, Parent& parent )
       : OwningNode( std::move( name_ ), parent )
@@ -23,6 +27,9 @@ class Hash : public OwningNode
     }
 
     using ValueType = Variable< Value >;
+
+    using MyType = Hash< Key, Value >;
+    using Observable< MyType >::notify;
 
     ValueType& operator[]( const Key& key )
     {
@@ -39,7 +46,14 @@ class Hash : public OwningNode
         assert( was_inserted );
       }
 
-      return *element_iterator->second;
+      ValueType& element{ *element_iterator->second };
+      element.observe(
+          [ this ]( const ValueType& )
+          {
+            notify();
+          } );
+
+      return element;
     }
 
     Value get( const Key& key ) const

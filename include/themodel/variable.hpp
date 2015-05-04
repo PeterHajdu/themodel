@@ -57,7 +57,7 @@ class Variable :
 
     virtual std::string dump() const override
     {
-      return to_lua_string( m_value );
+      return to_str( m_value );
     }
 
     virtual bool contains_meaningful_data() const override

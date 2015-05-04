@@ -133,6 +133,14 @@ Describe(a_variable)
     AssertThat( variable->dump(), Equals( std::to_string( initial_value ) ) );
   }
 
+  It( dumps_strings_properly )
+  {
+    variable.reset();
+    const std::string a_string( "this is a string" );
+    the::model::Variable< std::string > string_variable( variable_name, a_string, *node );
+    AssertThat( string_variable.dump(), Equals( a_string ) );
+  }
+
   It( calls_its_observers_on_change )
   {
     const test::Variable* called_with{ nullptr };

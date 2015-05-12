@@ -46,6 +46,7 @@ class Observable
           : m_observed( other.m_observed )
           , m_id( other.m_id )
         {
+          other.m_observed = nullptr;
         }
 
         AutoObserver& operator=( AutoObserver&& other )

@@ -65,6 +65,16 @@ Describe( an_observer )
     assert_observable();
   }
 
+  It ( moves_properly_old_observer_when_move_constructed )
+  {
+    std::unique_ptr< test::Observed::auto_observer_type > second_observer;
+    {
+      auto first_observer( observed->auto_observe( observer ) );
+      second_observer = std::make_unique< test::Observed::auto_observer_type >( std::move( first_observer ) );
+    }
+    assert_observable();
+  }
+
   It ( removes_previous_auto_observer_when_new_one_is_assigned )
   {
     bool was_new_observer_called{ false };

@@ -13,6 +13,7 @@ set(TEST_SOURCE_FILES
     test_json_exporter.cpp
     test_zmq_remote.cpp
     test_hash.cpp
+    test_observer.cpp
     )
 
 

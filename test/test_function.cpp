@@ -64,6 +64,12 @@ Describe(a_function)
     AssertThat( was_called, Equals( true ) );
   }
 
+  It( can_be_called_through_treenode )
+  {
+    function->call();
+    AssertThat( was_called, Equals( true ) );
+  }
+
   It( works_with_parameters )
   {
     function.reset();

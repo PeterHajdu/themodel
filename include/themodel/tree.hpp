@@ -45,6 +45,7 @@ class TreeNode
     }
 
     virtual std::string dump() const = 0;
+    virtual void call() const {}
 
     //todo: Implement new value class to describe functions and nodes without value.
     //really ugly solution, does not scale well...

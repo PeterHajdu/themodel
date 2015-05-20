@@ -30,6 +30,12 @@ class Function : public TreeNode
       return name;
     }
 
+    virtual void call() const override
+    {
+      auto function( m_parent_table[ name ] );
+      function.call();
+    }
+
   private:
     sol::table m_parent_table;
 

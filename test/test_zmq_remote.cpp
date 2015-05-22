@@ -19,7 +19,8 @@ class ZmqClient
 
     void send( const std::string& message )
     {
-      zmq::message_t request( message.length() + 1 );
+      zmq::message_t request( message.length() );
+      memcpy( request.data(), message.c_str(), message.length() );
       socket.send( request );
       using namespace std::literals;
       std::this_thread::sleep_for( 500ms );
@@ -64,7 +65,6 @@ Describe(a_zmq_remote)
         } );
     } catch( std::exception& e )
     {
-      std::cout << e.what() << std::endl;
       throw e;
     }
 
@@ -112,12 +112,31 @@ Describe(a_zmq_remote)
     AssertThat( number_of_exporter_calls, Equals( 1u ) );
   }
 
+  It( can_call_a_treenode )
+  {
+    const std::string request{ std::string( "call " ) + root_name };
+    zmq_client->send( request );
+    zmq_remote->handle_requests();
+    AssertThat( root.was_called, Equals( true ) );
+  }
+
+  It( can_call_a_treenode_farther_in_the_tree )
+  {
+    const std::string request{ std::string( "call " ) + root_name + "." + child_name };
+    zmq_client->send( request );
+    zmq_remote->handle_requests();
+    AssertThat( child.was_called, Equals( true ) );
+  }
+
   std::unique_ptr< the::model::ZmqRemote > zmq_remote;
 
   const char *endpoint{ "tcp://127.0.0.1:5555" };
   const std::string root_name{ "root" };
-  const test::TreeNode root{ root_name };
+  test::TreeNode root{ root_name };
   const std::string exported_tree{ "exported tree" };
+
+  const std::string child_name{ "child" };
+  test::TreeNode child{ child_name, root };
 
   std::unique_ptr< test::ZmqClient > zmq_client;
 

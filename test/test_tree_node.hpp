@@ -48,6 +48,12 @@ class TreeNode : public the::model::TreeNode
       return value != "";
     }
 
+    mutable bool was_called{ false };
+    virtual void call() const override
+    {
+      was_called = true;
+    }
+
     std::string value;
 };
 

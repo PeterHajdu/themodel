@@ -24,6 +24,7 @@ class ZmqRemote
     void handle_requests();
 
   private:
+    void call_function_if_requested( const zmq::message_t& );
     zmq::context_t m_context;
     zmq::socket_t m_socket;
     Exporter m_exporter;

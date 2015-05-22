@@ -7,7 +7,7 @@ int main( int argc, const char *argv[] )
   {
     std::cerr <<
       "Usage: " << std::endl <<
-      "  " << argv[ 0 ] << " <endpoint>" << std::endl;
+      "  " << argv[ 0 ] << " <endpoint> [path.to.call]" << std::endl;
     return 1;
   }
 
@@ -23,6 +23,13 @@ int main( int argc, const char *argv[] )
     socket.connect( endpoint );
 
     zmq::message_t message;
+    if ( argc >= 3 )
+    {
+      const std::string request( std::string( "call " ) + argv[ 2 ] );
+      message.rebuild( request.size() );
+      memcpy( message.data(), request.c_str(), request.size() );
+    }
+
     socket.send( message );
     if ( !socket.recv( &message ) )
     {
